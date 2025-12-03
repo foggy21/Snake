@@ -40,7 +40,7 @@ namespace Snake.Entity
             {
                 _cells[cell.x, cell.y] = OCCUPIED_CELL;
             }
-            throw new NullReferenceException("Cells isn't initialized (Cells is null)");
+            throw new NullReferenceException("Cells ain't initialized (Cells is null)");
         }
 
         public void LiberateCell(Vector2Int cell)
@@ -49,7 +49,7 @@ namespace Snake.Entity
             {
                 _cells[cell.x, cell.y] = FREE_CELL;
             }
-            throw new NullReferenceException("Cells isn't initialized (Cells is null)");
+            throw new NullReferenceException("Cells ain't initialized (Cells is null)");
         }
 
         public bool IsLiberatedCell(Vector2Int cell)

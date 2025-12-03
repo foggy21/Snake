@@ -5,15 +5,34 @@ using Random = UnityEngine.Random;
 
 namespace Snake.Service
 {
-    public class GridService
+    public sealed class GridService : Service
     {
-        public Grid _grid;
-
-        public GridService()
-        {
-            _grid = Grid.Instance;
-        }
+        private readonly byte _height = 10;
+        private readonly byte _width = 20;
         
+        private readonly Grid _grid = Grid.Instance;
+
+        public static GridService Instance { get; private set; }
+
+        private void Awake()
+        {
+            Initialize();
+        }
+
+        protected override void Initialize()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+                _grid.Initialize(_height, _width);
+                DontDestroyOnLoad(Instance);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+
         public Vector2Int GetRandomFreeCell()
         {
             Vector2Int[] freeCells = GetFreeCells();
