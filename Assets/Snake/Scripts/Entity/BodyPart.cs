@@ -24,7 +24,7 @@ namespace Snake.Entity
         public virtual void Move(Vector2 direction)
         {
             _position += _movementDirection;
-            Rotate(_movementDirection);
+            _rotation = Rotate(_movementDirection);
             _behindBodyPart?.Move(_movementDirection);
             _movementDirection = direction;
         }
@@ -34,10 +34,10 @@ namespace Snake.Entity
             _behindBodyPart = bodyPart;
         }
 
-        protected void Rotate(Vector2 direction)
+        protected virtual Quaternion Rotate(Vector2 direction)
         {
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            _rotation = Quaternion.Euler(0, 0, angle);
+            return Quaternion.Euler(0, 0, angle);
         }
     }
 }
