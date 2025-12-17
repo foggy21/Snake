@@ -12,7 +12,7 @@ namespace Snake.Service
         private readonly Entity.Snake _snake = Entity.Snake.Instance;
         private SnakeActor _snakeActor;
 
-        private readonly Vector2 _startPosition = Vector2.zero;
+        private readonly Vector2Int _startPosition = new Vector2Int(23, 10);
         
         private void Awake()
         {
@@ -63,7 +63,7 @@ namespace Snake.Service
             _snakeActor.MoveBody(_snake);
         }
 
-        private void InputMove(Vector2 inputMove)
+        private void InputMove(Vector2Int inputMove)
         {
             _snake.Move(inputMove);
             _snakeActor.MoveBody(_snake);

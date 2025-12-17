@@ -20,15 +20,15 @@ namespace Snake.Entity
             Instance = new Snake();
         }
 
-        public void Initialize(Vector2 startPosition, byte countOfBodyParts)
+        public void Initialize(Vector2Int startPosition, byte countOfBodyParts)
         {
             InitializeBodyParts(startPosition, countOfBodyParts);
             InitializeHead(startPosition);
         }
 
-        private void InitializeBodyParts(Vector2 startPosition, byte countOfBodyParts)
+        private void InitializeBodyParts(Vector2Int startPosition, byte countOfBodyParts)
         {
-            Vector2 offsetPosition = startPosition - Vector2.right * countOfBodyParts;
+            Vector2Int offsetPosition = startPosition - Vector2Int.right * countOfBodyParts;
             for (byte i = 0; i < countOfBodyParts; i++)
             {
                 BodyPart behindBodyPart = _bodyParts.LastOrDefault();
@@ -39,11 +39,11 @@ namespace Snake.Entity
                 
                 _bodyParts.Add(bodyPart);
 
-                offsetPosition += Vector2.right;
+                offsetPosition += Vector2Int.right;
             }
         }
 
-        private void InitializeHead(Vector2 startPosition)
+        private void InitializeHead(Vector2Int startPosition)
         {   
             BodyPart behindBodyPart = _bodyParts.LastOrDefault();
             Head head = new Head(
@@ -59,7 +59,7 @@ namespace Snake.Entity
             _head.Move(_head.MovementDirection);
         }
 
-        public void Move(Vector2 direction)
+        public void Move(Vector2Int direction)
         {
             _head.MoveInDirection(direction);
         }

@@ -9,11 +9,11 @@ namespace Snake.Service
     {
         public static InputService Instance { get; private set; }
 
-        public event Action<Vector2> OnInputMove;
+        public event Action<Vector2Int> OnInputMove;
 
         private InputSystem _inputSystem;
 
-        private Vector2 _inputMove;
+        private Vector2Int _inputMove;
 
         private void Awake()
         {
@@ -43,7 +43,8 @@ namespace Snake.Service
 
         private void Move(InputAction.CallbackContext context)
         {
-            _inputMove = _inputSystem.Character.Move.ReadValue<Vector2>();
+            Vector2 input = _inputSystem.Character.Move.ReadValue<Vector2>();
+            _inputMove = new Vector2Int((int)input.x, (int)input.y);
             OnInputMove?.Invoke(_inputMove);
         }
     }

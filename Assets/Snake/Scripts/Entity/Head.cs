@@ -4,13 +4,13 @@ namespace Snake.Entity
 {
     public class Head : BodyPart
     {
-        public Vector2 MovementDirection => _movementDirection;
+        public Vector2Int MovementDirection => _movementDirection;
         
-        public Head(Vector2 position, BodyPart behindBodyPart)
+        public Head(Vector2Int position, BodyPart behindBodyPart)
             : base(position, behindBodyPart)
         { }
 
-        public void MoveInDirection(Vector2 direction)
+        public void MoveInDirection(Vector2Int direction)
         {
             Quaternion angle = Rotate(direction);
             if (!IsOppositeAngel(angle))
@@ -21,11 +21,12 @@ namespace Snake.Entity
             }
         }
 
-        public override void Move(Vector2 direction)
+        public override void Move(Vector2Int direction)
         {
+            Grid.Instance.LiberateCell(_position);
             _position += direction;
+            Grid.Instance.OccupyCell(_position);
             _behindBodyPart?.Move(direction);
-            _movementDirection = direction;
         }
 
         private bool IsOppositeAngel(Quaternion angle)

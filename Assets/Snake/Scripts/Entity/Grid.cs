@@ -31,7 +31,7 @@ namespace Snake.Entity
         {
             _height = height;
             _width = width;
-            _cells = new bool[_height, _width];
+            _cells = new bool[_width, _height];
         }
 
         public void OccupyCell(Vector2Int cell)
@@ -39,6 +39,7 @@ namespace Snake.Entity
             if (_cells != null)
             {
                 _cells[cell.x, cell.y] = OCCUPIED_CELL;
+                return;
             }
             throw new NullReferenceException("Cells ain't initialized (Cells is null)");
         }
@@ -48,6 +49,7 @@ namespace Snake.Entity
             if (_cells != null)
             {
                 _cells[cell.x, cell.y] = FREE_CELL;
+                return;
             }
             throw new NullReferenceException("Cells ain't initialized (Cells is null)");
         }

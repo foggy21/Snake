@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using Snake.Entity;
-using Snake.Service;
 using UnityEngine;
 
 namespace Snake.Scripts.Actor
@@ -42,7 +40,7 @@ namespace Snake.Scripts.Actor
                 {
                     GameObject head = Instantiate(
                         headGameObject,
-                        bodyPart.Position,
+                        new Vector3(bodyPart.Position.x, bodyPart.Position.y, 0),
                         bodyPart.Rotation,
                         transform);
                     _bodyParts.Add(head.transform);
@@ -50,7 +48,7 @@ namespace Snake.Scripts.Actor
                 }
                 GameObject body = Instantiate(
                     bodyGameObject,
-                    bodyPart.Position,
+                    new Vector3(bodyPart.Position.x, bodyPart.Position.y, 0),
                     bodyPart.Rotation,
                     transform);
                 _bodyParts.Add(body.transform);
@@ -61,7 +59,7 @@ namespace Snake.Scripts.Actor
         {
             for (int i = _bodyParts.Count - 1; i >= 0; i--)
             {
-                _bodyParts[i].position = snake.BodyParts[i].Position;
+                _bodyParts[i].position = new Vector3(snake.BodyParts[i].Position.x, snake.BodyParts[i].Position.y, 0);
                 _bodyParts[i].rotation = snake.BodyParts[i].Rotation;
             }
         }
