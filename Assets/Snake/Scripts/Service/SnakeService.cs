@@ -1,5 +1,9 @@
+using System;
+using System.Linq;
+using Snake.Entity;
 using Snake.Scripts.Actor;
 using UnityEngine;
+using Grid = Snake.Entity.Grid;
 
 namespace Snake.Service
 {
@@ -12,7 +16,9 @@ namespace Snake.Service
         private readonly Entity.Snake _snake = Entity.Snake.Instance;
         private SnakeActor _snakeActor;
 
-        private readonly Vector2Int _startPosition = new Vector2Int(23, 10);
+        private readonly Vector2Int _startPosition = new(21, 10);
+
+        public event Action OnGameOver;
         
         private void Awake()
         {
@@ -60,13 +66,67 @@ namespace Snake.Service
         private void MoveAlways()
         {
             _snake.Move();
-            _snakeActor.MoveBody(_snake);
+            MoveSnakeActor();
         }
 
         private void InputMove(Vector2Int inputMove)
         {
             _snake.Move(inputMove);
-            _snakeActor.MoveBody(_snake);
+            MoveSnakeActor();
+        }
+
+        private void MoveSnakeActor()
+        {
+            _snakeActor.Move(_snake);
+            CheckGameOverSituation();
+        }
+
+        private void CheckGameOverSituation()
+        {
+            if (IsHeadAtGridEdge() || IsHeadAtBodyPart())
+            {
+                DisableService();
+            }
+        }
+        
+        private bool IsHeadAtGridEdge()
+        {
+            BodyPart head = _snake.BodyParts.LastOrDefault();
+            if (head is Head)
+            {
+                if (head.Position.x == Grid.Instance.Width - 1
+                    || head.Position.x == 0
+                    || head.Position.y == Grid.Instance.Height - 1
+                    || head.Position.y == 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+            throw new Exception("Head must be the last element of BodyParts");
+        }
+
+        private bool IsHeadAtBodyPart()
+        {
+            BodyPart head = _snake.BodyParts.LastOrDefault();
+            if (head is Head)
+            {
+                if (!Grid.Instance.IsLiberatedCell(head.Position)
+                    && Grid.Instance.Cells[head.Position.x, head.Position.y] != head
+                    && Grid.Instance.Cells[head.Position.x, head.Position.y] is BodyPart)
+                {
+                    return true;
+                }
+                return false;
+            }
+            throw new Exception("Head must be the last element of BodyParts");
+        }
+
+        private void DisableService()
+        {
+            OnGameOver?.Invoke();
+            CancelInvoke(nameof(MoveAlways));
+            gameObject.SetActive(false);
         }
     }
 }

@@ -23,9 +23,9 @@ namespace Snake.Entity
 
         public override void Move(Vector2Int direction)
         {
-            Grid.Instance.LiberateCell(_position);
+            Grid.Instance.LiberateCell(this);
             _position += direction;
-            Grid.Instance.OccupyCell(_position);
+            Grid.Instance.OccupyCell(this);
             _behindBodyPart?.Move(direction);
         }
 

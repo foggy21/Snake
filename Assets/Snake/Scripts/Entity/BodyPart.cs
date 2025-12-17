@@ -2,16 +2,14 @@ using UnityEngine;
 
 namespace Snake.Entity
 {
-    public class BodyPart
+    public class BodyPart : GridObject
     {
-        protected Vector2Int _position;
         protected Quaternion _rotation;
         
         protected Vector2Int _movementDirection = Vector2Int.right;
 
         protected BodyPart _behindBodyPart;
-
-        public Vector2Int Position => _position;
+        
         public Quaternion Rotation => _rotation;
 
         public BodyPart(Vector2Int position, BodyPart behindBodyPart)
@@ -19,15 +17,15 @@ namespace Snake.Entity
             _position = position;
             _rotation = Quaternion.identity;
             _behindBodyPart = behindBodyPart;
-            Grid.Instance.OccupyCell(_position);
+            Grid.Instance.OccupyCell(this);
         }
         
         public virtual void Move(Vector2Int direction)
         {
-            Grid.Instance.LiberateCell(_position);
+            Grid.Instance.LiberateCell(this);
             _position += _movementDirection;
             _rotation = Rotate(_movementDirection);
-            Grid.Instance.OccupyCell(_position);
+            Grid.Instance.OccupyCell(this);
             
             _behindBodyPart?.Move(_movementDirection);
             _movementDirection = direction;

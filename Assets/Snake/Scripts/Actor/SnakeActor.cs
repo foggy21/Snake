@@ -8,26 +8,8 @@ namespace Snake.Scripts.Actor
     {
         private const string RESOURCE_BODY_PATH = "Snake/Body";
         private const string RESOURCE_HEAD_PATH = "Snake/Head";
-        private static SnakeActor Instance { get; set; }
    
-        private List<Transform> _bodyParts = new();
-
-        private void Awake()
-        {
-            Initialize();
-        }
-
-        protected override void Initialize()
-        {
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-        }
+        private readonly List<Transform> _bodyParts = new();
 
         public void InitializeBody(Entity.Snake snake)
         {
@@ -55,11 +37,14 @@ namespace Snake.Scripts.Actor
             }
         }
 
-        public void MoveBody(Entity.Snake snake)
+        public void Move(Entity.Snake snake)
         {
             for (int i = _bodyParts.Count - 1; i >= 0; i--)
             {
-                _bodyParts[i].position = new Vector3(snake.BodyParts[i].Position.x, snake.BodyParts[i].Position.y, 0);
+                _bodyParts[i].position = new Vector3(
+                    snake.BodyParts[i].Position.x, 
+                    snake.BodyParts[i].Position.y, 
+                    0);
                 _bodyParts[i].rotation = snake.BodyParts[i].Rotation;
             }
         }

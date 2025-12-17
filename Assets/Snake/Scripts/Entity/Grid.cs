@@ -7,18 +7,15 @@ namespace Snake.Entity
     {
         public static Grid Instance { get; }
         
-        private const bool OCCUPIED_CELL = true;
-        private const bool FREE_CELL = false;
-        
         private byte _height;
         private byte _width;
     
-        private bool[,] _cells;
+        private GridObject[,] _cells;
 
         public byte Height => _height;
         public byte Width => _width;
 
-        public bool[,] Cells => _cells;
+        public GridObject[,] Cells => _cells;
 
         private Grid() {}
 
@@ -31,24 +28,24 @@ namespace Snake.Entity
         {
             _height = height;
             _width = width;
-            _cells = new bool[_width, _height];
+            _cells = new GridObject[_width, _height];
         }
 
-        public void OccupyCell(Vector2Int cell)
+        public void OccupyCell(GridObject gridObject)
         {
             if (_cells != null)
             {
-                _cells[cell.x, cell.y] = OCCUPIED_CELL;
+                _cells[gridObject.Position.x, gridObject.Position.y] = gridObject;
                 return;
             }
             throw new NullReferenceException("Cells ain't initialized (Cells is null)");
         }
 
-        public void LiberateCell(Vector2Int cell)
+        public void LiberateCell(GridObject gridObject)
         {
             if (_cells != null)
             {
-                _cells[cell.x, cell.y] = FREE_CELL;
+                _cells[gridObject.Position.x, gridObject.Position.y] = null;
                 return;
             }
             throw new NullReferenceException("Cells ain't initialized (Cells is null)");
@@ -58,7 +55,7 @@ namespace Snake.Entity
         {
             if (_cells != null)
             {
-                return _cells[cell.x, cell.y] == FREE_CELL;
+                return _cells[cell.x, cell.y] == null;
             }
             throw new NullReferenceException("Cells isn't initialized (Cells is null)");
         }

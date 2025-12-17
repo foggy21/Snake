@@ -4,6 +4,6 @@ namespace Snake.Scripts.Actor
 {
     public abstract class Actor : MonoBehaviour
     {
-        protected abstract void Initialize();
+        public virtual void Initialize() {}
     }
 }

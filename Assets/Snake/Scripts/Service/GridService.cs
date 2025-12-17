@@ -8,7 +8,7 @@ namespace Snake.Service
     public sealed class GridService : Service
     {
         private readonly byte _height = 21;
-        private readonly byte _width = 47;
+        private readonly byte _width = 37;
         
         private readonly Grid _grid = Grid.Instance;
 
