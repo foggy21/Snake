@@ -6,16 +6,29 @@ namespace Snake.Entity
     {
         protected Quaternion _rotation;
         
-        protected Vector2Int _movementDirection = Vector2Int.right;
+        protected Vector2Int _movementDirection;
 
         protected BodyPart _behindBodyPart;
         
         public Quaternion Rotation => _rotation;
+        public Vector2Int MovementDirection => _movementDirection;
 
         public BodyPart(Vector2Int position, BodyPart behindBodyPart)
         {
             _position = position;
             _rotation = Quaternion.identity;
+            _movementDirection = Vector2Int.right;
+            _behindBodyPart = behindBodyPart;
+            Grid.Instance.OccupyCell(this);
+        }
+
+        public BodyPart(Vector2Int position,
+            BodyPart behindBodyPart,
+            Vector2Int movementDirection)
+        {
+            _position = position;
+            _movementDirection = movementDirection;
+            _rotation = Rotate(_movementDirection);
             _behindBodyPart = behindBodyPart;
             Grid.Instance.OccupyCell(this);
         }

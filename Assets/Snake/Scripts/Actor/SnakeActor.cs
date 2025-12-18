@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Snake.Entity;
 using UnityEngine;
@@ -11,10 +12,16 @@ namespace Snake.Scripts.Actor
    
         private readonly List<Transform> _bodyParts = new();
 
+        private GameObject _bodyGameObject;
+
+        private void Awake()
+        {
+            _bodyGameObject = Resources.Load<GameObject>(RESOURCE_BODY_PATH);
+        }
+
         public void InitializeBody(Entity.Snake snake)
         {
             GameObject headGameObject = Resources.Load<GameObject>(RESOURCE_HEAD_PATH);
-            GameObject bodyGameObject = Resources.Load<GameObject>(RESOURCE_BODY_PATH);
             
             foreach (var bodyPart in snake.BodyParts)
             {
@@ -29,7 +36,7 @@ namespace Snake.Scripts.Actor
                     continue;
                 }
                 GameObject body = Instantiate(
-                    bodyGameObject,
+                    _bodyGameObject,
                     new Vector3(bodyPart.Position.x, bodyPart.Position.y, 0),
                     bodyPart.Rotation,
                     transform);
@@ -37,6 +44,16 @@ namespace Snake.Scripts.Actor
             }
         }
 
+        public void AddNewBodyPart(BodyPart bodyPart)
+        {
+            GameObject newBodyPart = Instantiate(
+                _bodyGameObject,
+                new Vector3(bodyPart.Position.x, bodyPart.Position.y, 0),
+                bodyPart.Rotation,
+                transform);
+            _bodyParts.Insert(0, newBodyPart.transform);
+        }
+        
         public void Move(Entity.Snake snake)
         {
             for (int i = _bodyParts.Count - 1; i >= 0; i--)

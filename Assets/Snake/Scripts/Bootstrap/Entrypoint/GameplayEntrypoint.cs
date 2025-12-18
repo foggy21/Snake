@@ -10,6 +10,7 @@ namespace Snake.Bootstrap.Entrypoint
             ServiceLoader.Load<InputService>("Input Service");
             ServiceLoader.Load<GridService>("Grid Service");
             ServiceLoader.Load<SnakeService>("Snake Service");
+            ServiceLoader.Load<FoodService>("Food Service");
             ServiceLoader.Load<EndGameService>("End Game Service");
         }
     }

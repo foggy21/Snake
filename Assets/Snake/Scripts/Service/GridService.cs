@@ -44,9 +44,9 @@ namespace Snake.Service
         {
             Vector2Int[] freeCells = {};
         
-            for (int i = 0; i < _grid.Cells.GetLength(0); i++)
+            for (int i = 1; i < _grid.Cells.GetLength(0) - 1; i++)
             {
-                for (int j = 0; j < _grid.Cells.GetLength(1); j++)
+                for (int j = 1; j < _grid.Cells.GetLength(1) - 1; j++)
                 {
                     Vector2Int cell = new Vector2Int(i, j);
                     if (_grid.IsLiberatedCell(cell))

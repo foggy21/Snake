@@ -4,8 +4,6 @@ namespace Snake.Entity
 {
     public class Head : BodyPart
     {
-        public Vector2Int MovementDirection => _movementDirection;
-        
         public Head(Vector2Int position, BodyPart behindBodyPart)
             : base(position, behindBodyPart)
         { }
@@ -25,7 +23,12 @@ namespace Snake.Entity
         {
             Grid.Instance.LiberateCell(this);
             _position += direction;
-            Grid.Instance.OccupyCell(this);
+            
+            if (Grid.Instance.IsLiberatedCell(_position))
+            {
+                Grid.Instance.OccupyCell(this);   
+            }
+            
             _behindBodyPart?.Move(direction);
         }
 

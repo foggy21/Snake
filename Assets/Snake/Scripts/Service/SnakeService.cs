@@ -79,6 +79,7 @@ namespace Snake.Service
         {
             _snakeActor.Move(_snake);
             CheckGameOverSituation();
+            CheckBonus();
         }
 
         private void CheckGameOverSituation()
@@ -127,6 +128,73 @@ namespace Snake.Service
             OnGameOver?.Invoke();
             CancelInvoke(nameof(MoveAlways));
             gameObject.SetActive(false);
+        }
+
+        private void CheckBonus()
+        {
+            if (IsHeadAtBonus())
+            {
+                ActivateBonus();
+            }
+        }
+
+        private bool IsHeadAtBonus()
+        {
+            BodyPart head = _snake.BodyParts.LastOrDefault();
+            if (head is Head)
+            {
+                if (!Grid.Instance.IsLiberatedCell(head.Position)
+                    && Grid.Instance.Cells[head.Position.x, head.Position.y] is Bonus)
+                {
+                    return true;
+                }
+                return false;
+            }
+            throw new Exception("Head must be the last element of BodyParts");
+        }
+
+        private void ActivateBonus()
+        {
+            BodyPart head = _snake.BodyParts.LastOrDefault();
+            if (head is Head)
+            {
+                Bonus bonus = (Bonus)Grid.Instance.Cells[head.Position.x, head.Position.y];
+                if (bonus is Food)
+                {
+                    FoodService.Instance.ApplyFood();
+                    return;
+                }
+            }
+            throw new Exception("Head must be the last element of BodyParts");
+        }
+        
+        public void GetBonus(Bonus bonus)
+        {
+            if (bonus is Food)
+            {
+                for (byte i = 0; i < bonus.Value; i++)
+                {
+                    AddNewBehindBodyPart();
+                }
+            }
+        }
+
+        private void AddNewBehindBodyPart()
+        {
+            BodyPart lastBodyPart = _snake.BodyParts.FirstOrDefault();
+            if (lastBodyPart != null)
+            {
+                BodyPart newBodyPart = new(
+                    lastBodyPart.Position - lastBodyPart.MovementDirection,
+                    null,
+                    lastBodyPart.MovementDirection);
+                
+                _snake.BodyParts.Insert(0, newBodyPart);
+                lastBodyPart.AddBehindBodyPart(newBodyPart);
+                _snakeActor.AddNewBodyPart(newBodyPart);
+                return;
+            }
+            throw new Exception("Snake doesn't contain body parts");
         }
     }
 }
